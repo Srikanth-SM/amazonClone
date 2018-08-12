@@ -1,0 +1,40 @@
+{
+  "name": "shoppingcart",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --timeout 1000 ./tests/server.tests.js"
+  },
+  "author": "srikanth",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.7.2",
+    "angular-ui-router": "^1.0.18",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.3",
+    "connect-mongo": "^2.0.1",
+    "ejs": "^2.6.1",
+    "ejs-mate": "^2.3.0",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "grunt": "^1.0.3",
+    "mongo": "^0.1.0",
+    "mongoose": "^5.2.3",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "passport-strategy": "^1.0.0"
+  },
+  "devDependencies": {
+    "expect": "^23.4.0",
+    "grunt": "^1.0.3",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-qunit": "^2.0.0",
+    "grunt-contrib-uglify": "^3.3.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-serve": "^0.1.6",
+    "mocha": "^5.2.0",
+    "supertest": "^3.1.0"
+  }
+}
