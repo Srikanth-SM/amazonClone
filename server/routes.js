@@ -7,6 +7,7 @@ var cors = require('cors');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var passport = require('./config/passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 var config = require('./config/config');
 
@@ -14,6 +15,8 @@ var config = require('./config/config');
 
 var user = require('./controllers/user');
 var errors = require('./errors/errors');
+var products = require('./controllers/addProduct');
+
 
 
 
@@ -37,7 +40,7 @@ app.use(session({
 	resave: true,
 	saveUninitialized: false,
 	cookie:{maxAge:600000},
-	store:new MongoStore({'db':config.database })
+	store:new MongoStore({'url':config.database })
 }));
 
 // app.use(function(req, res, next) {
@@ -57,11 +60,15 @@ app.get('/', user.home);
 app.post("/register",user.register);
 
 // app.post("/signIn",user.signIn);
-app.post('/signIn',passport.authenticate('local-login',{successRedirect:'/login',failureRedirect:'/'});
+console.log(passport.authenticate);
+// app.post('/signIn',passport.authenticate('local-login',{successRedirect:'/login',failureRedirect:'/'}));
 
 app.get("/profile",user.profile);
 
 app.post("/signUp",user.register);
+app.get("/allProducts",products.get);
+app.get("/product/:id",products.getProduct);
+// app.post("/addProduct",)
 
 // app.use(function(err,req,res,next){
 // 	console.log(err);

@@ -39,8 +39,12 @@ module.exports = function(grunt) {
     watch: {
       files: ['<%= jshint.files %>'],
       tasks: ['jshint', 'qunit']
-    }
-    ,serve: {
+    },
+    build: {
+      src: 'src/<%= pkg.name %>.js',
+      dest: 'build/<%= pkg.name %>.min.js'
+    },
+    serve: {
       'path': './client/index.html',
       options: {
         port: 9000
@@ -57,5 +61,6 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['jshint', 'qunit']);
 
   grunt.registerTask('default', ['jshint', 'qunit', 'concat', 'uglify']);
+  grunt.registerTask('build', ['qunit', 'concat', 'uglify']);
 
 };

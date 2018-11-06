@@ -35,6 +35,20 @@ app.config(function($stateProvider,$urlRouterProvider) {
 		url:'/dashboard'
 
 	})
+	.state("allProducts", {
+		// templateUrl : "./userRegistration/userRegister.html",
+		controller:"ProductsController",
+		templateUrl:'./products/products.html',
+		url:'/allProducts'
+
+	})
+	.state("product", {
+		// templateUrl : "./userRegistration/userRegister.html",
+		controller:"ProductsController",
+		templateUrl:'./products/product.html',
+		url:'/product/:productId'
+
+	})
 	// .otherwise("/");
 	$urlRouterProvider.otherwise("/");
 })
