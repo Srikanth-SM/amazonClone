@@ -1,14 +1,22 @@
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/shoppingCart',function(err,success){
-	if(!err && success){
-		console.log("connection successful");
-	}
-	else{
-		console.log("error",err);
-	}
-});
+console.log(__filename);
+import mongoose from "mongoose";
+mongoose.set("debug", true);
+var username = process.env.MONGODB_USERNAME;
+var password = process.env.MONGODB_PASSWORD;
+
+mongoose.connect(
+  `mongodb://${username}:${password}@ds129085.mlab.com:29085/shoppingcart`,
+  function(err, success) {
+    if (!err && success) {
+      console.log("connection successful");
+    } else {
+      console.log("error", err);
+    }
+  }
+);
 var Schema = mongoose.Schema;
 // db.disconnect();
-module.exports = {
-	mongoose,Schema
-}
+export default {
+  mongoose,
+  Schema
+};

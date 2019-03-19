@@ -1,5 +1,9 @@
-module.exports = {
-	database:'mongodb://127.0.0.1:27017/shoppingCart',
-	host:"http://localhost",
-	port:3000
-}
+console.log(__filename);
+var username = process.env.MONGODB_USERNAME;
+var password = process.env.MONGODB_PASSWORD;
+
+export default {
+  database: `mongodb://${username}:${password}@ds129085.mlab.com:29085/shoppingcart`,
+  // host: "http://localhost",
+  port: 27017
+};

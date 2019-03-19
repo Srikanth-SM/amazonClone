@@ -1,13 +1,14 @@
-var {mongoose,Schema} = require('../db/dbConnection');
+console.log(__filename);
+import mongoose from "mongoose";
 // var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var categorySchema = new Schema({
-	name:{
-		type:String,
-		lowercase:true,
-		unique:true
-	}
+  name: {
+    type: String,
+    lowercase: true,
+    unique: true
+  }
 });
-
-module.exports = mongoose.model('Category',categorySchema);
+var Category = mongoose.model("Category", categorySchema);
+export default mongoose.model("Category", categorySchema);
