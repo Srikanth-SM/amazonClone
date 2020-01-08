@@ -12,7 +12,8 @@ var UserSchema = new Schema({
   email: {
     type: "string",
     lowercase: true,
-    unique: true
+    unique: true,
+    minlength: 4
   },
   address: {
     type: "string"
@@ -28,38 +29,31 @@ var UserSchema = new Schema({
       default: ""
     }
   },
-  name: String,
+  name: {
+    type: String,
+    minlength: 4
+  },
   password: {
     type: String
   }
 });
 
-// var tankSchema = new Schema({ name: "string", size: "string" });
-// var Tank = mongoose.model("Tank", tankSchema);
-
 UserSchema.pre("save", function(next) {
-  // console.log('save',this);
-  // console.log(this);
   var user = this;
   // console.log(user.isModified());
   // console.log(bcrypt);
   if (!user.isModified("password")) return next();
   bcrypt.hash(user.password, null, null, function(err, res) {
-    // console.log(res);
+    console.log(res);
     user.password = res;
     next();
   });
 });
 
-UserSchema.methods.comparePassword = function(password) {
+UserSchema.methods.comparePassword = async function(password) {
   var user = this;
-  var bool = bcrypt.compareSync(password, this.password);
+  var bool = await bcrypt.compare(password, this.password);
   return bool;
 };
 
-var User = mongoose.model("User", UserSchema);
-// var Tank = mongoose.model("Tank", tankSchema);
-
-export default {
-  User: User
-};
+export default mongoose.model("User", UserSchema);

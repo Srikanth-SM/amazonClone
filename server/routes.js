@@ -69,12 +69,4 @@ console.log(passport.authenticate);
 // 	console.log(err);
 // });
 app.use(errors.validationErrors);
-var server = app.listen(3000);
-// console.log("routes",app);
-
-// module.exports = {
-//   server
-// };
-export default {
-  server: server
-};
+export default app;

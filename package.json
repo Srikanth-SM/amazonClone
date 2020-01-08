@@ -4,17 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "babel server/  --out-dir ./dist/",
-    "test": "mocha --timeout 1000 ./server/tests/server.tests.js",
+    "build": "babel --watch server/  --out-dir ./dist/",
+    "test": "mocha --require babel-polyfill --require @babel/register  ./tests/models/**",
     "format": "prettier --write \"server/**/*.{js,jsx,css,json}\"",
     "prestart": "npm run format",
-    "start": "node ./dist/server"
+    "start": "npm build && node dist/server.js",
+    "dev": "nodemon --exec babel-node server/server.js"
   },
   "author": "srikanth",
   "license": "ISC",
   "dependencies": {
-    "angular": "^1.7.2",
-    "angular-ui-router": "^1.0.18",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
     "connect-mongo": "^2.0.1",
@@ -33,10 +32,11 @@
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
+    "@babel/node": "^7.7.7",
     "@babel/preset-env": "^7.3.4",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-preset-env": "^1.7.0",
+    "@babel/register": "^7.7.7",
+    "babel-polyfill": "^6.26.0",
+    "chai": "^4.2.0",
     "dotenv": "^6.2.0",
     "expect": "^23.4.0",
     "grunt": "^1.0.3",
@@ -47,6 +47,7 @@
     "grunt-contrib-watch": "^1.1.0",
     "grunt-serve": "^0.1.6",
     "mocha": "^5.2.0",
+    "nodemon": "^2.0.2",
     "prettier": "^1.16.4",
     "supertest": "^3.1.0"
   }
