@@ -1,58 +1,57 @@
 import bcrypt from 'bcrypt';
-// var bcrypt = require("bcrypt-nodejs");
+import { Sequelize } from 'sequelize';
+import sequelize from '../db';
 
-import mongoose from 'mongoose';
-
-const { Schema } = mongoose;
-
-const UserSchema = new Schema({
+sequelize.define('user', {
   email: {
-    type: 'string',
-    lowercase: true,
+    type: Sequelize.STRING,
     unique: true,
-    minlength: 4,
-  },
-  address: {
-    type: 'string',
-  },
-  profile: {
-    name: {
-      type: 'string',
-      lowercase: true,
-      default: '',
-    },
-    picture: {
-      type: 'string',
-      default: '',
-    },
-  },
-  name: {
-    type: String,
-    minlength: 4,
+    allowNull: false,
+    primaryKey: true,
+    validate: {
+      isEmail: {
+        msg: 'email not valid'
+      },
+    }
   },
   password: {
-    type: String,
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: { len: { args: [8, 16], msg: 'password must be between 8 to 16 charaters' } }
   },
-});
+  address: Sequelize.STRING,
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      len: {
+        args: [4, 10],
+        msg: 'must be minimum of 4 chars'
+      }
+    }
+  }
+})
+
+
 
 // eslint-disable-next-line func-names
-UserSchema.pre('save', function save(next) {
-  const user = this;
-  if (!user.isModified('password')) next();
-  bcrypt.hash(user.password, 10, (err, res) => {
-    user.password = res;
-    next();
-  });
-});
+// UserSchema.pre('save', function save(next) {
+//   const user = this;
+//   if (!user.isModified('password')) next();
+//   bcrypt.hash(user.password, 10, (err, res) => {
+//     user.password = res;
+//     next();
+//   });
+// });
 
-UserSchema.methods.comparePassword = async function comparePassword(password) {
-  try {
-    const bool = await bcrypt.compare(password, this.password);
-    console.log(bool);
-    return bool;
-  } catch (err) {
-    throw new Error(err);
-  }
-};
+// UserSchema.methods.comparePassword = async function comparePassword(password) {
+//   try {
+//     const bool = await bcrypt.compare(password, this.password);
+//     console.log(bool);
+//     return bool;
+//   } catch (err) {
+//     throw new Error(err);
+//   }
+// };
 
-export default mongoose.model('User', UserSchema);
+export default sequelize.models.user

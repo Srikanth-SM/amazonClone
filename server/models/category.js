@@ -1,15 +1,27 @@
-import mongoose from 'mongoose';
+import Sequelize from 'sequelize';
+import sequelize from '../db';
+import Product from './products';
 
-console.log(__filename);
-// var mongoose = require('mongoose');
-const { Schema } = mongoose;
-
-const categorySchema = new Schema({
+sequelize.define('category', {
   name: {
-    type: String,
-    lowercase: true,
+    type: Sequelize.STRING,
+    allowNull: false,
     unique: true,
-  },
+    set: function (val) {
+      this.setDataValue('name', val.toLowerCase());
+    }
+
+  }
+})
+
+const Category = sequelize.models.category
+Category.hasMany(Product, {
+  foreignKey: {
+    allowNull: false,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  }
 });
-const Category = mongoose.model('Category', categorySchema);
-export default mongoose.model('Category', categorySchema);
+Product.belongsTo(Category)
+
+export default Category;

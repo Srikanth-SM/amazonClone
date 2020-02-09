@@ -5,8 +5,7 @@ const { Router } = express;
 
 const cartRoute = new Router();
 
-// cartRoute.get('/', cart.get);
-
-cartRoute.post('/', cart.addToCart);
+cartRoute.post('/', cart.updateCart);
+cartRoute.get('/buy', cart.placeOrder);
 
 export default cartRoute;

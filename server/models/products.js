@@ -1,31 +1,17 @@
-import mongoose from 'mongoose';
-import Category from './category';
+import Sequelize from 'sequelize';
+import sequelize from '../db';
 
-console.log(__filename);
-// var mongoose = require('mongoose');
-const { Schema } = mongoose;
-// var Category = require("./category");
-console.log(Category);
-
-const productSchema = new Schema({
-  productName: {
-    type: String,
-    lowercase: true,
-  },
-  product: {
-    type: String,
-    lowercase: true,
-    // unique:true
+sequelize.define('product', {
+  name: {
+    type: Sequelize.STRING,
+    unique: true,
+    allowNull: false
   },
   price: {
-    type: Number,
-  },
-  category: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
-  imageurl: {
-    type: String,
-  },
-});
+    type: Sequelize.DECIMAL
+  }
+})
 
-const Product = mongoose.model('Product', productSchema);
+const Product = sequelize.models.product;
 
 export default Product;

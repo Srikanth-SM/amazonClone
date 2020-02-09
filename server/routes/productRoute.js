@@ -9,4 +9,6 @@ productRoute.get('/', products.get);
 
 productRoute.post('/', products.addProduct);
 
+productRoute.get('/:id', products.getProduct);
+
 export default productRoute;
