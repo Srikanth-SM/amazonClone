@@ -1,59 +1,58 @@
-console.log(__filename);
-import bcrypt from "bcrypt-nodejs";
+import bcrypt from 'bcrypt';
 // var bcrypt = require("bcrypt-nodejs");
 
-import mongoose from "mongoose";
-// var mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
-// var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
-var UserSchema = new Schema({
+const UserSchema = new Schema({
   email: {
-    type: "string",
+    type: 'string',
     lowercase: true,
     unique: true,
-    minlength: 4
+    minlength: 4,
   },
   address: {
-    type: "string"
+    type: 'string',
   },
   profile: {
     name: {
-      type: "string",
+      type: 'string',
       lowercase: true,
-      default: ""
+      default: '',
     },
     picture: {
-      type: "string",
-      default: ""
-    }
+      type: 'string',
+      default: '',
+    },
   },
   name: {
     type: String,
-    minlength: 4
+    minlength: 4,
   },
   password: {
-    type: String
-  }
+    type: String,
+  },
 });
 
-UserSchema.pre("save", function(next) {
-  var user = this;
-  // console.log(user.isModified());
-  // console.log(bcrypt);
-  if (!user.isModified("password")) return next();
-  bcrypt.hash(user.password, null, null, function(err, res) {
-    console.log(res);
+// eslint-disable-next-line func-names
+UserSchema.pre('save', function save(next) {
+  const user = this;
+  if (!user.isModified('password')) next();
+  bcrypt.hash(user.password, 10, (err, res) => {
     user.password = res;
     next();
   });
 });
 
-UserSchema.methods.comparePassword = async function(password) {
-  var user = this;
-  var bool = await bcrypt.compare(password, this.password);
-  return bool;
+UserSchema.methods.comparePassword = async function comparePassword(password) {
+  try {
+    const bool = await bcrypt.compare(password, this.password);
+    console.log(bool);
+    return bool;
+  } catch (err) {
+    throw new Error(err);
+  }
 };
 
-export default mongoose.model("User", UserSchema);
+export default mongoose.model('User', UserSchema);

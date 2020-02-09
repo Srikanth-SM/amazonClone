@@ -1,57 +1,61 @@
-console.log(__filename);
-import passport from "passport";
-import passportLocal from "passport-local";
+import passport from 'passport';
+import passportLocal from 'passport-local';
 
-import User from "../models/user";
+import User from '../models/user';
 
-var LocalStrategy = passportLocal.Strategy;
-// var passport = require("passport");
-// var LocalStrategy = require("passport-local").Strategy;
-// console.log(LocalStrategy);
-// var User = require("../models/user");
+const LocalStrategy = passportLocal.Strategy;
 
-//serialise and deserialise
-// console.log("inside passport.js");
-passport.serializeUser(function(user, done) {
-  done(null, user_id);
+passport.serializeUser((user, done) => {
+  // eslint-disable-next-line no-underscore-dangle
+  done(null, user._id);
 });
 
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
-    done(err, user);
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err, user) => {
+    // eslint-disable-next-line no-underscore-dangle
+    done(err, user._id);
   });
 });
-// console.log("LocalStrategy",LocalStrategy);
+
 passport.use(
-  "login-local",
+  'login-local',
   new LocalStrategy(
     {
-      usernameField: "email",
-      passwordField: "password",
-      passReqToCallback: true
+      usernameField: 'email',
+      passwordField: 'password',
+      passReqToCallback: true,
     },
-    function(req, email, password, done) {
-      // console.log(req);
-      User.findOne({ email: email }, function(err, user) {
+    (req, email, password, next) => {
+      User.findOne({ email }, (err, user) => {
         if (err) {
-          return done(err);
+          return next(err);
         }
         if (!user) {
-          return done(null, false, { message: "Incorrect username." });
+          const error = new Error('Invalid Credentials');
+          error.httpStatusCode = 401;
+          return next(error);
         }
-        if (!user.comparePassword(password)) {
-          return done(null, false, { message: "Incorrect password." });
-        }
-        return done(null, user);
+        user
+          .comparePassword(password)
+          .then((res) => {
+            if (res) {
+              return next(null, user);
+            }
+            const error = new Error('Invalid Credentials');
+            error.httpStatusCode = 401;
+            return next(error);
+          })
+          .catch((error) => {
+            return next(error);
+          });
       });
-    }
-  )
+    },
+  ),
 );
 
-exports.isAuthenticated = function(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  } else {
-    res.status(401).send("User not Authenticated");
-  }
+exports.isAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) next();
+  res.status(401).send('User not Authenticated');
 };
+
+export default passport;

@@ -1,13 +1,17 @@
-require("dotenv").config();
-import mongoose from "mongoose";
-mongoose.set("debug", true);
+import mongoose from 'mongoose';
+// import mongodb from 'mongodb';
 
-export default async db => {
+require('dotenv').config();
+
+// const MongoClient = mongodb.MongoClient;
+mongoose.set('debug', true);
+
+export default async (db) => {
   try {
-    return await mongoose.connect(db);
+    // const client = new MongoClient(db);
+    return await mongoose.connect(db, { useNewUrlParser: true }); // for mongoose npm
+    // return await client.connect();
   } catch (err) {
-    console.log("err when connecting to db", err);
+    throw new Error(err);
   }
 };
-
-// export default mongoose.connect();

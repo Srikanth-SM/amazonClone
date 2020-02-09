@@ -1,10 +1,10 @@
-var validationErrors = function(err, req, res, next) {
-  console.log("Inside validation errors", err);
+const validationErrors = function(err, req, res, next) {
+  console.log('Inside validation errors', JSON.stringify(err));
 
   res
-    .status(500)
-    .send({ error: err.message, stack: err.stack, code: err.code });
+    .status(err.httpStatusCode || err.code || 500)
+    .send({ error: err.message || err, stack: err.stack });
 };
 export default {
-  validationErrors
+  validationErrors,
 };

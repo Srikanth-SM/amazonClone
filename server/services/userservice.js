@@ -1,12 +1,15 @@
-import User from "../models/user";
+import User from '../models/user';
 
-const userRegisterService = function(user) {
-  const newUser = new User(user);
-  newUser.save(function(err, suc) {
-    if (!err && suc)
-      res.json({ email: suc.email, name: suc.name, password: suc.password });
-    else {
-      next(err);
-    }
-  });
+const registrationService = async user => {
+  try {
+    const newUser = new User(user);
+    const savedUser = await newUser.save();
+    return { email: savedUser.email, name: savedUser.name, status: true };
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+export default {
+  registrationService,
 };

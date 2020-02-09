@@ -1,30 +1,31 @@
+import mongoose from 'mongoose';
+import Category from './category';
+
 console.log(__filename);
-import mongoose from "mongoose";
 // var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-import Category from "./category";
+const { Schema } = mongoose;
 // var Category = require("./category");
 console.log(Category);
 
-var productSchema = new Schema({
+const productSchema = new Schema({
   productName: {
     type: String,
-    lowercase: true
+    lowercase: true,
   },
   product: {
     type: String,
-    lowercase: true
+    lowercase: true,
     // unique:true
   },
   price: {
-    type: Number
+    type: Number,
   },
-  category: [{ type: Schema.Types.ObjectId, ref: "Category" }],
+  category: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
   imageurl: {
-    type: String
-  }
+    type: String,
+  },
 });
 
-var Product = mongoose.model("Product", productSchema);
+const Product = mongoose.model('Product', productSchema);
 
-export default { Product };
+export default Product;
