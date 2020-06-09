@@ -30,6 +30,7 @@
     "mongo": "^0.1.0",
     "mongodb": "^3.5.2",
     "mongoose": "^5.4.11",
+    "mysql2": "^2.1.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "passport-strategy": "^1.0.0",

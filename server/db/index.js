@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import mysql from 'sequelize';
 import logger from '../logger';
 import Redis from 'ioredis';
-const redis = new Redis();
+const redis = new Redis({host:'172.17.0.2',port:6379});
 
 dotenv.config();
 

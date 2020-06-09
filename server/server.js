@@ -6,7 +6,7 @@ import User from './models/user';
 import Category from './models/category'
 import Product from './models/products';
 
-sequelize.sync({ force: true })
+sequelize.sync()
   .then(res => {
     console.log("DB connected successfully");
     const User = sequelize.models.user;
