@@ -24,9 +24,9 @@
     "winston": "^3.2.1"
   },
   "scripts": {
-    "start": "eslint --fix . && nodemon --exec ts-node src/index.ts",
+    "start:dev": "eslint --fix . && nodemon --exec ts-node src/index.ts",
     "format": "prettier --write \"src/**/*.{ts,js,jsx,css,json}\"",
     "build": "tsc -p .",
-    "start:prod": "cd ./dist && node index.js"
+    "start": "npm run build && cd ./dist && node index.js"
   }
 }
