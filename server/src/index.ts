@@ -9,4 +9,6 @@ createConnection()
       logger.info('Running on port 3000');
     });
   })
-  .catch((error) => logger.error(error));
+  .catch((error) => {
+    logger.error('error', error);
+  });
