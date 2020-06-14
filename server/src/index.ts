@@ -1,7 +1,10 @@
+import dotenv from 'dotenv';
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import logger from './logger';
 import app from './routes';
+
+dotenv.config();
 
 createConnection()
   .then(() => {

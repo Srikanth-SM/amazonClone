@@ -7,14 +7,22 @@ const logger = createLogger({
   level: process.env.LOG_LEVEL || 'debug',
   format: format.combine(
     format.timestamp(),
+    format.errors({ stack: true }),
+    format.metadata(),
     format.colorize({ all: true }),
     format.prettyPrint()
   )
   // change below if we want to log to file, use stream
   // transports: [
   //   new winston.transports.Console({
-  //     format: winston.format.prettyPrint()
+  //     format: format.combine(
+  //       format.timestamp(),
+  //       format.colorize({ all: process.stdout.isTTY ? true : false }),
+  //       format.errors({ stack: true }),
+  //       format.prettyPrint()
+  //     )
   //   })
+  //   // format.colorize({ all: true })
   // ]
 });
 

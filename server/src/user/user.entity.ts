@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn
+} from 'typeorm';
 
 @Entity()
 export default class User {
@@ -13,6 +19,15 @@ export default class User {
 
   @Column({ type: 'varchar' })
   password: string;
+
+  @Column({ type: 'varchar', default: null })
+  sessionToken?: string;
+
+  @CreateDateColumn()
+  createdAt?: Date;
+
+  @UpdateDateColumn()
+  updatedAt?: Date;
 
   constructor(name: string, password: string, email: string) {
     this.name = name;
