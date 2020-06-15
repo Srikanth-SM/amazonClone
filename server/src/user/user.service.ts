@@ -3,16 +3,18 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import logger from '../logger';
 import User from './user.entity';
+import { isObject } from 'util';
 
 interface Credential {
   email: string;
   password: string;
 }
 let userRepository;
+const secret = process.env.JWT_SECRET;
 
 export const registerUserService = async (newuser: User): Promise<User> => {
   logger.info('registerUserService');
-  const userRepository = getUserRepository();
+  userRepository = getUserRepository();
   //check if user already exists
   const { name, password, email } = newuser;
 
@@ -42,13 +44,12 @@ export const AuthUserService = async (
   if (!isPasswordMatched) {
     throw Error('Error while logging in, username or password incorrect');
   }
-
   return { email: (<User>user).email, name: (<User>user).name };
 };
 
 export const CreateUserSession = async (email: string): Promise<string> => {
   logger.info('CreateUserSession');
-  const sessionToken = jwt.sign(email, 'secret');
+  const sessionToken = jwt.sign({ email }, secret, { expiresIn: 60 });
   await userRepository.update({ email }, { sessionToken });
   return sessionToken;
 };
@@ -58,9 +59,20 @@ export const signInUserService = async (
 ): Promise<{ email: string; sessionToken: string; name: string }> => {
   logger.info('signInUserService');
   const { email, password } = credential;
+  // check for registered user
   const { name } = await AuthUserService(email, password);
+  // create session
   const sessionToken = await CreateUserSession(email);
   return { email, sessionToken, name: name };
+};
+
+export const signOutUserService = async (headers: string[]): Promise<void> => {
+  logger.info('signOutUserService');
+
+  userRepository = getUserRepository();
+
+  const { email } = <{ email: string }>await jwt.verify(headers[0], secret);
+  await userRepository.update({ email }, { sessionToken: null });
 };
 
 const getUserRepository = (): Repository<User> => {
